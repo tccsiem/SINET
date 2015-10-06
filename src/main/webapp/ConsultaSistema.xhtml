@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/template/Layout.xhtml"
+				xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:f="http://xmlns.jcp.org/jsf/core"
+				xmlns:h="http://xmlns.jcp.org/jsf/html"
+				xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+				xmlns:p="http://primefaces.org/ui"> 
+
+	
+	
+	<ui:define name="titulo">Consulta de Logs</ui:define>
+	<ui:define name="corpo">
+	<h1>Consulta de Logs</h1>
+	<h:form id="frm">
+		<h:panelGrid columns="3">
+				<p:inputText value="#{consultaSystemEventsBean.filtro.sysLogTag}" id="sysLogTag"/>
+				
+				<p:commandButton value="Consultar" update="database" process="@form" />
+		</h:panelGrid>
+		<p:dataTable id="database" value="#{consultaSystemEventsBean.modelo}"
+				     var="systemevents" border="1" cellspacing="0" cellspadding="2" paginator="true" 
+				     rows="10"  paginatorPosition="bottom"  lazy="true">
+					<f:facet name="header">
+				     		Logs
+				     	<p:commandButton id="toggler" style="float:right" icon="ui-icon-calculator"/>	
+				     	<p:columnToggler datasource="database" trigger="toggler"/>
+				     	<br/>
+				     </f:facet>
+					  <p:column headerText="ReceivedAt" sortBy="#{systemevents.receivedAt}">
+						<h:outputText value="#{systemevents.receivedAt}" />
+					 </p:column>
+					  <p:column headerText="DeviceReportedTime" sortBy="#{systemevents.deviceReportedTime}">
+					 	<h:outputText value="#{systemevents.deviceReportedTime}" />
+					 </p:column>
+					  <p:column headerText="Facility">
+					 	<h:outputText value="#{systemevents.facility}"/>
+					 </p:column>
+					  <p:column headerText="Priority">
+					 	<h:outputText value="#{systemevents.priority}" />
+					 </p:column>
+					  <p:column headerText="FromHost">
+					 	<h:outputText value="#{systemevents.fromHost}" />
+					 </p:column>
+					  <p:column headerText="Message" width="400">
+					 	<h:outputText value="#{systemevents.message}" />
+					 </p:column>
+					 
+					  <p:column headerText="SyslogTag">
+					 	<h:outputText value="#{systemevents.sysLogTag}" />
+					 </p:column>
+			</p:dataTable>
+	</h:form>
+</ui:define>
+</ui:composition>
